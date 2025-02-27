@@ -2,7 +2,7 @@
 
 Um script completo para configurar, otimizar e proteger sistemas Ubuntu recém-instalados ou existentes, aplicando boas práticas de segurança, desempenho e manutenção.
 
-![Ubuntu Setup](https://i.imgur.com/GfJD8n0.png)
+## Ubuntu Setup
 
 ## 📋 Sumário
 
