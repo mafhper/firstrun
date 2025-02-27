@@ -1,120 +1,242 @@
-## Visão Geral
-Este script foi desenvolvido para automatizar a configuração de um sistema Ubuntu recém-instalado, implementando boas práticas de segurança, desempenho e manutenção. O objetivo é fornecer uma base sólida e segura para o seu sistema, economizando tempo e garantindo que configurações importantes não sejam esquecidas.
+# 🐧 Script Avançado de Configuração e Boas Práticas para Ubuntu
 
-## Funcionalidades Principais
+Um script completo para configurar, otimizar e proteger sistemas Ubuntu recém-instalados ou existentes, aplicando boas práticas de segurança, desempenho e manutenção.
 
-### 1. Atualização do Sistema
-**Propósito:** Manter o sistema atualizado é fundamental para segurança e estabilidade.
+![Ubuntu Setup](https://i.imgur.com/GfJD8n0.png)
+
+## 📋 Sumário
+
+- [Visão Geral](#visão-geral)
+- [Funcionalidades](#funcionalidades)
+- [Requisitos](#requisitos)
+- [Instalação](#instalação)
+- [Utilização](#utilização)
+- [Personalização](#personalização)
+- [Referência das Seções](#referência-das-seções)
+- [Segurança](#segurança)
+- [Solução de Problemas](#solução-de-problemas)
+- [Contribuições](#contribuições)
+- [Licença](#licença)
+
+## 🔍 Visão Geral
+
+Este script foi desenvolvido para automatizar a configuração de sistemas Ubuntu, aplicando configurações recomendadas de segurança, desempenho e manutenção. Ele é interativo, permitindo que você escolha quais componentes deseja instalar e configurar, além de fornecer feedback visual durante todo o processo.
+
+O script é ideal para:
+- Administradores de sistemas que precisam configurar múltiplos servidores Ubuntu
+- Usuários que desejam otimizar e proteger seus sistemas Ubuntu recém-instalados
+- Equipes de DevOps que buscam padronizar ambientes de desenvolvimento
+
+## ✨ Funcionalidades
+
+O script inclui as seguintes funcionalidades principais:
+
+### 1. Sistema e Pacotes
+- ✅ Atualização completa do sistema (apt update, upgrade, dist-upgrade)
+- ✅ Instalação de pacotes essenciais organizados por categorias
+- ✅ Configuração opcional do Docker
+
+### 2. Segurança
+- 🔒 Configuração de firewall (UFW) com regras básicas
+- 🔒 Proteção contra ataques de força bruta (Fail2ban)
+- 🔒 Configuração segura do SSH
+- 🔒 Verificação de rootkits (RKHunter, Chkrootkit)
+- 🔒 Auditoria de segurança com Lynis
+- 🔒 Configuração de AppArmor
+
+### 3. Otimizações
+- ⚡ Ajustes de kernel para melhor desempenho
+- ⚡ Otimização de swappiness e cache
+- ⚡ Configuração de limites de recursos do sistema
+- ⚡ Otimização do agendador de disco
+- ⚡ Configuração de TLP para laptops (economia de bateria)
+
+### 4. Backup e Manutenção
+- 💾 Instalação e configuração de Timeshift para backup do sistema
+- 💾 Configuração de rsync para backup de dados
+- 💾 Script de manutenção periódica agendado via cron
+- 💾 Atualizações automáticas de segurança
+
+### 5. Extras
+- 🔧 Aliases úteis para todos os usuários
+- 🔧 Banner de segurança para SSH
+- 🔧 Log detalhado de todas as operações
+
+## 📋 Requisitos
+
+- Sistema Ubuntu (testado nas versões 18.04, 20.04, 22.04 e 24.04)
+- Acesso de superusuário (root) ou permissões sudo
+- Conexão com a internet (para baixar pacotes)
+
+## 📥 Instalação
+
+1. Faça o download do script:
+
 ```bash
-apt update && apt upgrade -y
+wget https://raw.githubusercontent.com/seu-usuario/seu-repositorio/main/setup_ubuntu.sh
 ```
-Esta função atualiza a lista de pacotes disponíveis e, em seguida, atualiza todos os pacotes instalados para suas versões mais recentes.
 
-### 2. Instalação de Pacotes Essenciais
-**Propósito:** Instalar um conjunto básico de ferramentas úteis para administração do sistema.
+2. Torne o script executável:
+
 ```bash
-apt install -y build-essential software-properties-common apt-transport-https ca-certificates curl wget git vim htop net-tools unzip gnupg lsb-release ufw fail2ban
+chmod +x setup_ubuntu.sh
 ```
-Inclui:
-- `build-essential`: Ferramentas para compilação de software
-- `git`, `vim`: Ferramentas para desenvolvimento
-- `htop`, `net-tools`: Monitoramento do sistema
-- `ufw`, `fail2ban`: Ferramentas de segurança
 
-### 3. Configuração do Firewall (UFW)
-**Propósito:** Implementar uma barreira de segurança básica para proteger contra acessos não autorizados.
+3. Execute como superusuário:
+
+```bash
+sudo ./setup_ubuntu.sh
+```
+
+Alternativamente, clone o repositório completo:
+
+```bash
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
+sudo ./setup_ubuntu.sh
+```
+
+## 🚀 Utilização
+
+Ao executar o script, você será guiado por um processo interativo:
+
+1. O script verificará se você está executando como root
+2. Serão exibidas informações sobre o sistema detectado
+3. Para cada seção principal, você poderá decidir se deseja prosseguir
+4. Em pontos críticos (como ativar firewall ou reiniciar SSH), o script pedirá confirmação
+5. Ao final, será exibido um resumo das ações realizadas e recomendações
+
+### 📊 Arquivo de Log
+
+Todas as operações são registradas em um arquivo de log em:
+```
+/var/log/ubuntu_setup_[data-hora].log
+```
+
+Este log é útil para revisar as ações realizadas e diagnosticar problemas.
+
+## ⚙️ Personalização
+
+Você pode personalizar o script editando-o e modificando as seguintes seções:
+
+### Pacotes Instalados
+
+Edite as variáveis no início da seção `INSTALAÇÃO DE PACOTES ESSENCIAIS`:
+
+```bash
+BASIC_PKGS="build-essential software-properties-common apt-transport-https ca-certificates curl wget git vim"
+SYSTEM_PKGS="htop net-tools unzip gnupg lsb-release iotop sysstat ntp"
+# ...
+```
+
+### Configurações de Segurança
+
+Ajuste as regras de firewall na seção `CONFIGURAÇÃO DE SEGURANÇA`:
+
 ```bash
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow ssh
 ufw allow 80/tcp
 ufw allow 443/tcp
+# Adicione mais regras conforme necessário
 ```
-Esta configuração:
-- Bloqueia todas as conexões de entrada por padrão
-- Permite todas as conexões de saída
-- Abre apenas as portas necessárias (SSH, HTTP, HTTPS)
 
-### 4. Configuração do Fail2ban
-**Propósito:** Proteger contra tentativas de força bruta e outros ataques persistentes.
+### Script de Manutenção
+
+Personalize o script de manutenção periódica em:
+
 ```bash
-systemctl enable fail2ban
-systemctl start fail2ban
+cat > /usr/local/bin/system_maintenance.sh <<'EOL'
+# ... edite o conteúdo aqui ...
+EOL
 ```
-O Fail2ban monitora logs do sistema e bloqueia temporariamente IPs que mostram comportamento malicioso (como múltiplas tentativas de login falhas).
 
-### 5. Atualizações Automáticas
-**Propósito:** Garantir que patches de segurança sejam aplicados sem intervenção manual.
+### Agendamento de Tarefas
+
+Altere a frequência das tarefas de manutenção:
+
 ```bash
-apt install -y unattended-upgrades
-dpkg-reconfigure -plow unattended-upgrades
+cat > /etc/cron.d/system_maintenance <<EOL
+# Altere para diário, mensal ou outra frequência
+0 3 * * 0 root /usr/local/bin/system_maintenance.sh
+EOL
 ```
-Configura o sistema para baixar e instalar atualizações de segurança automaticamente.
 
-### 6. Otimizações do Sistema
-**Propósito:** Melhorar desempenho ajustando parâmetros do kernel.
-```bash
-echo "vm.swappiness=10" >> /etc/sysctl.conf
-echo "vm.vfs_cache_pressure=50" >> /etc/sysctl.conf
-```
-- `vm.swappiness=10`: Reduz o uso de swap quando há memória RAM disponível
-- `vm.vfs_cache_pressure=50`: Ajusta o equilíbrio entre cache de arquivos e memória disponível
+## 📚 Referência das Seções
 
-### 7. Limpeza do Sistema
-**Propósito:** Remover pacotes desnecessários para liberar espaço em disco.
-```bash
-apt autoremove -y
-apt autoclean
-```
-Remove pacotes que não são mais necessários e limpa o cache de pacotes APT.
+### 1. ATUALIZAÇÃO DO SISTEMA
+Atualiza o sistema operacional para a versão mais recente dos pacotes instalados.
 
-### 8. Configuração de Backup (Timeshift)
-**Propósito:** Permitir a recuperação do sistema em caso de falhas.
-```bash
-add-apt-repository -y ppa:teejee2008/ppa
-apt update
-apt install -y timeshift
-```
-O Timeshift cria snapshots do sistema, facilitando a restauração em caso de problemas.
+### 2. INSTALAÇÃO DE PACOTES ESSENCIAIS
+Instala ferramentas básicas para administração do sistema, utilitários e aplicativos de segurança.
 
-### 9. Ferramentas Adicionais
-**Propósito:** Instalar utilitários específicos para melhorar a usabilidade e segurança.
+### 3. CONFIGURAÇÃO DE SEGURANÇA
+Configura firewall, proteção contra invasões e hardening do sistema.
 
-Inclui:
-- Suporte a arquivos compactados (`p7zip-full`, `rar`, etc.)
-- Ferramentas de detecção de rootkits (`rkhunter`, `chkrootkit`)
-- Ferramentas de monitoramento (`sysstat`, `iotop`)
+### 4. OTIMIZAÇÕES DO SISTEMA
+Aplica configurações para melhorar o desempenho e a eficiência do sistema.
 
-### 10. Manutenção Programada
-**Propósito:** Automatizar tarefas de manutenção periódicas.
-```bash
-# Cria script de manutenção e agenda execução semanal
-echo "0 2 * * 0 root /usr/local/bin/system_maintenance.sh > /var/log/system_maintenance.log 2>&1" > /etc/cron.d/system_maintenance
-```
-Configura uma tarefa cron para executar semanalmente:
-- Atualização do sistema
-- Limpeza de pacotes
-- Verificação de segurança
+### 5. CONFIGURAÇÃO DE ATUALIZAÇÕES AUTOMÁTICAS
+Configura o sistema para instalar automaticamente atualizações de segurança.
 
-## Como Usar
-1. Salve o script como `setup_ubuntu.sh`
-2. Torne-o executável com `chmod +x setup_ubuntu.sh`
-3. Execute-o como superusuário: `sudo ./setup_ubuntu.sh`
-4. Reinicie o sistema após a conclusão
+### 6. CONFIGURAÇÃO DE BACKUP
+Instala e configura ferramentas para backup do sistema e dados.
 
-## Personalização
-O script foi projetado para ser modificado de acordo com necessidades específicas:
-- Comente ou descomente seções conforme necessário
-- Adicione pacotes específicos para seu caso de uso
-- Ajuste as regras de firewall para seus serviços
+### 7. TAREFAS DE MANUTENÇÃO AGENDADAS
+Configura scripts para executar tarefas de manutenção periodicamente.
 
-## Considerações de Segurança
-- Revise cuidadosamente as regras do firewall antes de ativá-lo
-- Ao usar em servidores de produção, considere medidas de segurança adicionais
-- Teste o script em um ambiente controlado antes de aplicá-lo em sistemas críticos
+### 8. LIMPEZA FINAL
+Remove arquivos temporários e pacotes desnecessários.
 
-## Manutenção
-Após a instalação inicial, é recomendado:
-- Verificar periodicamente se as tarefas de manutenção estão sendo executadas
-- Conferir os backups do Timeshift
-- Revisar logs do sistema em `/var/log/` para quaisquer problemas
+### 9. PERSONALIZAÇÃO ADICIONAL
+Configura aliases úteis e banner de segurança.
+
+## 🛡️ Segurança
+
+Este script aplica várias camadas de segurança, mas é importante observar:
+
+- **ATENÇÃO**: Antes de ativar o firewall ou alterar configurações SSH, certifique-se de que não perderá acesso ao sistema.
+- Mantenha cópias de segurança antes de executar o script em ambientes de produção.
+- O script faz backup dos arquivos de configuração antes de modificá-los, mas é recomendável ter backups adicionais.
+- Algumas configurações de segurança podem precisar de ajustes adicionais dependendo do seu caso de uso específico.
+
+## ❓ Solução de Problemas
+
+### Problemas comuns e soluções:
+
+1. **O script não executa**
+   - Verifique se o script tem permissão de execução: `chmod +x setup_ubuntu.sh`
+   - Certifique-se de estar executando como root ou com sudo
+
+2. **Perdi acesso SSH após configuração**
+   - Se você configurou o SSH para usar apenas chaves e não configurou corretamente, acesse o sistema diretamente e reverta as alterações: `nano /etc/ssh/sshd_config.bak.[timestamp]` e copie o conteúdo de volta.
+
+3. **O firewall está bloqueando meu acesso**
+   - Acesse o sistema diretamente e desative o firewall: `ufw disable`
+
+4. **Erro em algum pacote durante a instalação**
+   - Verifique o arquivo de log para identificar qual pacote falhou
+   - Execute manualmente: `apt install -y nome-do-pacote`
+
+5. **O script de manutenção não está sendo executado**
+   - Verifique os logs: `grep system_maintenance /var/log/syslog`
+   - Verifique se o arquivo cron está corretamente configurado: `cat /etc/cron.d/system_maintenance`
+
+## 🤝 Contribuições
+
+Contribuições são bem-vindas! Se você tem sugestões para melhorar este script:
+
+1. Faça um fork do projeto
+2. Crie um branch para sua feature (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -am 'Adiciona nova funcionalidade'`)
+4. Push para o branch (`git push origin feature/nova-funcionalidade`)
+5. Crie um Pull Request
+
+## 📄 Licença
+
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+---
+
+Desenvolvido com ❤️ para a comunidade Ubuntu.
