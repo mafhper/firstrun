@@ -1,5 +1,3 @@
-t# Ubuntu Setup Script - README
-
 ## Visão Geral
 Este script foi desenvolvido para automatizar a configuração de um sistema Ubuntu recém-instalado, implementando boas práticas de segurança, desempenho e manutenção. O objetivo é fornecer uma base sólida e segura para o seu sistema, economizando tempo e garantindo que configurações importantes não sejam esquecidas.
 
