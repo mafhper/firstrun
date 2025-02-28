@@ -2,7 +2,7 @@
 #================================================================
 # TÍTULO: Script Avançado de Configuração e Boas Práticas para Ubuntu
 # DESCRIÇÃO: Instala pacotes essenciais, configura segurança e otimiza o sistema
-# AUTOR: [Seu Nome]
+# AUTOR: [Matheus :P Lima]
 # VERSÃO: 2.0
 # DATA: $(date +%d-%m-%Y)
 #================================================================
